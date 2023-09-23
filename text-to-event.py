@@ -60,7 +60,7 @@ if user_input:
              "  \n START: " + str(e.begin) + "  \n END: " + str(e.end) + "  \n DESCRIPTION: " + str(e.description)
 
     st.write("# Event Summary:\n", result)
-    with open('result.ics', 'w') as f:
+    with open('event.ics', 'w') as f:
         f.writelines(c.serialize_iter())
 
-    st.download_button('Downloads .ics file', open('result.ics'), file_name='event.ics')
+    st.download_button('Downloads .ics file', open('event.ics'), file_name='event.ics')

@@ -13,9 +13,8 @@
 <br /><br />
 
 ### TODO:
-  - Rename variables
   - Support for time
-  - Error proof (add more examples)
-  - Timezone support
+  - Error proof (add more examples and error checks)
   - Output parser with LangChain
+  - Timezone support
     
