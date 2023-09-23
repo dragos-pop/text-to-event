@@ -4,10 +4,10 @@ import ics
 import re
 from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate
-from prompt_template import PROMPT
+from prompt_template import PROMPT_TEMPLATE
 
-st.set_page_config(page_title="Text-to-Event", layout="wide")
-st.title("Text-to-Event")
+st.set_page_config(page_title="text-to-event", layout="wide")
+st.title("text-to-event")
 
 with st.sidebar:
     openai_api_key = st.text_input("OpenAI API Key", type="password")
@@ -38,33 +38,28 @@ if st.button("Submit"):
         st.info("No input.")
 
 if user_input:
+    prompt = PromptTemplate(input_variables=["user_input"], template=PROMPT_TEMPLATE)
+    llm = OpenAI(model_name="text-davinci-003", openai_api_key=openai_api_key)
+    answer = llm(prompt.format(user_input=user_input))
+
+    cleaned_answer = answer.replace("\n", "")
+    pattern = r"^NAME: ([\w\s'-]+)LOCATION: ([\w\s'-]+)START: ([\w\s'-]+)END: ([\w\s'-]+)DESCRIPTION: ([\w\s'-]+)"
+    regex = re.compile(pattern)
+    parsed_answer = regex.match(cleaned_answer).groups()
+
     c = ics.Calendar()
     e = ics.Event()
-    template = PROMPT
-    prompt = PromptTemplate(input_variables=["email"], template=template)
-
-    llm = OpenAI(model_name="text-davinci-003", openai_api_key=openai_api_key)
-    answer = llm(prompt.format(email=user_input))
-    cleaned_answer = answer.replace("\n", "")
-
-    pattern = r"^NAME: ([\w\s'-]+)LOCATION: ([\w\s'-]+)START DATE: ([\w\s'-]+)END DATE: ([\w\s'-]+)DESCRIPTION: ([\w\s'-]+)"
-
-    regex = re.compile(pattern)
-    result = regex.match(cleaned_answer).groups()
-
-    e.name = result[0]
-    e.location = result[1]
-    e.begin = result[2]
-    e.end = result[3]
-    # e.begin = '2023-08-03 01:30:00'
-    # e.end = '2023-08-03 01:45:00'
-    e.description = result[4]
+    e.name = parsed_answer[0]
+    e.location = parsed_answer[1]
+    e.begin = parsed_answer[2] #'2023-08-03 01:30:00'
+    e.end = parsed_answer[3] #'2023-08-03 01:45:00'
+    e.description = parsed_answer[4]
     c.events.add(e)
 
-    final_result = "NAME: " + e.name + "  \n LOCATION: " + e.location + \
-             "  \n START DATE: " + str(e.begin) + "  \n END DATE: " + str(e.end) + "  \n DESCRIPTION: " + str(e.description)
+    result = "NAME: " + e.name + "  \n LOCATION: " + e.location + \
+             "  \n START: " + str(e.begin) + "  \n END: " + str(e.end) + "  \n DESCRIPTION: " + str(e.description)
 
-    st.write("# Event Summary:\n", final_result)
+    st.write("# Event Summary:\n", result)
     with open('result.ics', 'w') as f:
         f.writelines(c.serialize_iter())
 

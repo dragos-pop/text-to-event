@@ -13,7 +13,6 @@
 <br /><br />
 
 ### TODO:
-  - backend (80%) 
   - Rename variables
   - Support for time
   - Error proof (add more examples)
