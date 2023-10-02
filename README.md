@@ -14,8 +14,7 @@ App accessible at https://text-to-event.streamlit.app
 <br /><br />
 
 ### TODO:
-  - Time support 
-  - More examples to the prompt
+  - Time support
   - Output parser with LangChain
   - Error checks
   - Timezone support
