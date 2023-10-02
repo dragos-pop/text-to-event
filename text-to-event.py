@@ -43,7 +43,7 @@ if user_input:
     answer = llm(prompt.format(user_input=user_input))
 
     cleaned_answer = answer.replace("\n", "")
-    pattern = r"^NAME: ([\w\s'-]+)LOCATION: ([\w\s'-]+)START: ([\w\s'-]+)END: ([\w\s'-]+)DESCRIPTION: ([\w\s'-]+)"
+    pattern = r"^NAME: ([\w\s'-]+)LOCATION: ([\w\s'-]+)START: ([\w\s'-:]+)END: ([\w\s'-:]+)DESCRIPTION: ([\w\s'-]+)"
     regex = re.compile(pattern)
     parsed_answer = regex.match(cleaned_answer).groups()
 
@@ -51,8 +51,8 @@ if user_input:
     e = ics.Event()
     e.name = parsed_answer[0]
     e.location = parsed_answer[1]
-    e.begin = parsed_answer[2] #'2023-08-03 01:30:00'
-    e.end = parsed_answer[3] #'2023-08-03 01:45:00'
+    e.begin = parsed_answer[2]
+    e.end = parsed_answer[3]
     e.description = parsed_answer[4]
     c.events.add(e)
 

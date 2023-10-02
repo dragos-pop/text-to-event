@@ -23,8 +23,8 @@ ANSWER:
 
 NAME: Appointment Employment Pass Services Centre
 LOCATION: Employment Pass Services Centre
-START: 2023-08-21
-END: 2023-08-21
+START: 2023-08-21 08:30:00
+END: 2023-08-21 09:30:00
 DESCRIPTION: Appointment reference no. is M43467
 
 <End of example 1>
@@ -34,7 +34,7 @@ INPUT TO PARSE:
 
 "Dear Mr. Smith, 
 
-I am happy to tell you that the hiring manager believes you have the right profile for our vacancy and would like to schedule an interview with you on the 3rd of October, from 9am to 10:30am, at the Conference Hotel.
+I am happy to tell you that the hiring manager believes you have the right profile for our vacancy and would like to schedule an interview with you on the 3rd of October, from 13 to 14:30, at the Conference Hotel.
 
 During the interview, she will discuss further the role and responsibilities, the team’s expectations of you, as well as any questions you may have.
 
@@ -47,14 +47,14 @@ ANSWER:
 
 NAME: Interview with Hiring Manager
 LOCATION: Conference Hotel
-START: 2023-10-03
-END: 2023-10-03
+START: 2023-10-03 13:00:00
+END: 2023-10-03 14:30:00
 DESCRIPTION: role, responsabilities, team's expectations, questions
 
 <End of example 2>
 
 If the year is not mentioned, fill it in with 2023 for the start and end. 
-If the end is not mentioned, make it the same as the start.
-Do not include the "ANSWER:" at the beginning of the message!
+If the END is not mentioned, set it at the same data as the START but one hour later.
+Do not include the "ANSWER:" or blank lines at the beginning of the message!
 
 INPUT TO PARSE: "{user_input}"'''
