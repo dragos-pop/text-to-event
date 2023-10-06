@@ -10,9 +10,3 @@ App accessible at https://text-to-event.streamlit.app
 4) Download the .ics file to drop it in your Apple Calendar or [import it in your Google Calendar](https://support.google.com/calendar/thread/3231927/how-do-i-import-ics-files-into-google-calendar?hl=en).
 
 ![Intructions.png](Instructions.png)
-
-<br /><br />
-
-### TODO:
-  - Output parser with LangChain
-  - Timezone support
