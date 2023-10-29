@@ -2,6 +2,7 @@ import streamlit as st
 from io import StringIO
 import ics
 import arrow
+import datetime
 from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate
 from prompt_template import PROMPT_TEMPLATE
@@ -65,15 +66,48 @@ if user_input:
     e = ics.Event()
     e.name = parsed_answer[0]
     e.location = parsed_answer[1]
-    e.begin = parsed_answer[2]
-    e.begin = arrow.get(e.begin, tzinfo=timezone_str)
-    e.end = parsed_answer[3]
-    e.end = arrow.get(e.end, tzinfo=timezone_str)
+    e.begin = arrow.get(parsed_answer[2], tzinfo=timezone_str)
+    e.end = arrow.get(parsed_answer[3], tzinfo=timezone_str)
+
+    # support for some temporal deictic expressions
+    if "today" in user_input.lower():
+        today = datetime.date.today()
+        day = today.day
+        month = today.month
+        e.end = e.end.replace(month=month, day=day)
+        e.begin = e.begin.replace(month=month, day=day)
+    if "tomorrow" in user_input.lower():
+        tomorrow = datetime.date.today() + datetime.timedelta(days=1)
+        day = tomorrow.day
+        month = tomorrow.month
+        e.end = e.end.replace(month=month, day=day)
+        e.begin = e.begin.replace(month=month, day=day)
+    if "next" or "upcoming" or "following" in user_input.lower():
+        today = datetime.date.today()
+        if "monday" in user_input.lower():
+            dayofweek = today + datetime.timedelta((-today.weekday()) % 7)
+        if "tuesday" in user_input.lower():
+            dayofweek = today + datetime.timedelta((1 - today.weekday()) % 7)
+        if "wednesday" in user_input.lower():
+            dayofweek = today + datetime.timedelta((2 - today.weekday()) % 7)
+        if "thursday" in user_input.lower():
+            dayofweek = today + datetime.timedelta((3 - today.weekday()) % 7)
+        if "friday" in user_input.lower():
+            dayofweek = today + datetime.timedelta((4 - today.weekday()) % 7)
+        if "saturday" in user_input.lower():
+            dayofweek = today + datetime.timedelta((5 - today.weekday()) % 7)
+        if "sunday" in user_input.lower():
+            dayofweek = today + datetime.timedelta((6 - today.weekday()) % 7 + 7)
+        day = dayofweek.day
+        month = dayofweek.month
+        e.end = e.end.replace(month=month, day=day)
+        e.begin = e.begin.replace(month=month, day=day)
+
     e.description = parsed_answer[4]
     c.events.add(e)
 
     result = ("NAME: " + parsed_answer[0] + "  \n LOCATION: " + parsed_answer[1] + \
-             "  \n START: " + str(parsed_answer[2]) + "  \n END: " + str(parsed_answer[3]) + \
+             "  \n START: " + str(e.begin)[:-6] + "  \n END: " + str(e.end)[:-6] + \
              "  \n DESCRIPTION: " + str(parsed_answer[4]))
 
     st.write("# Event Summary:\n", result)
