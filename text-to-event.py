@@ -82,8 +82,9 @@ if user_input:
         month = tomorrow.month
         e.end = e.end.replace(month=month, day=day)
         e.begin = e.begin.replace(month=month, day=day)
-    if "next" or "upcoming" or "following" in user_input.lower():
+    elif "next" or "upcoming" or "following" in user_input.lower():
         today = datetime.date.today()
+        dayofweek = today
         if "monday" in user_input.lower():
             dayofweek = today + datetime.timedelta((-today.weekday()) % 7)
         if "tuesday" in user_input.lower():
