@@ -69,8 +69,6 @@ if user_input:
     e.begin = arrow.get(e.begin, tzinfo=timezone_str)
     e.end = parsed_answer[3]
     e.end = arrow.get(e.end, tzinfo=timezone_str)
-    # st.info(e.begin)
-    # st.error(arrow.get(e.begin, tzinfo=timezone_str))
     e.description = parsed_answer[4]
     c.events.add(e)
 
