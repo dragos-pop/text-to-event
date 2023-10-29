@@ -1,6 +1,7 @@
 import streamlit as st
 from io import StringIO
 import ics
+import arrow
 from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate
 from prompt_template import PROMPT_TEMPLATE
@@ -12,6 +13,20 @@ st.title("text-to-event")
 with st.sidebar:
     openai_api_key = st.text_input("OpenAI API Key", type="password")
     st.write("You can find your Secret API key in your [OpenAI User settings](https://beta.openai.com/account/api-keys).")
+
+st.subheader('Select your timezone:')
+tz = st.slider('', -12, 14, 0)
+if tz < 0:
+    s = "Your selected timezone is UTC" + str(tz)
+    st.write(s)
+    timezone_str = 'Etc/GMT'
+elif tz == 0:
+    st.write("Your selected timezone is UTC")
+    timezone_str = 'Etc/GMT' + str(-tz)
+else:
+    s = "Your selected timezone is UTC+" + str(tz)
+    st.write(s)
+    timezone_str = 'Etc/GMT' + str(-tz)
 
 left, right = st.columns([3, 2])
 with left:
@@ -51,12 +66,17 @@ if user_input:
     e.name = parsed_answer[0]
     e.location = parsed_answer[1]
     e.begin = parsed_answer[2]
+    e.begin = arrow.get(e.begin, tzinfo=timezone_str)
     e.end = parsed_answer[3]
+    e.end = arrow.get(e.end, tzinfo=timezone_str)
+    # st.info(e.begin)
+    # st.error(arrow.get(e.begin, tzinfo=timezone_str))
     e.description = parsed_answer[4]
     c.events.add(e)
 
-    result = "NAME: " + e.name + "  \n LOCATION: " + e.location + \
-             "  \n START: " + str(e.begin) + "  \n END: " + str(e.end) + "  \n DESCRIPTION: " + str(e.description)
+    result = ("NAME: " + parsed_answer[0] + "  \n LOCATION: " + parsed_answer[1] + \
+             "  \n START: " + str(parsed_answer[2]) + "  \n END: " + str(parsed_answer[3]) + \
+             "  \n DESCRIPTION: " + str(parsed_answer[4]))
 
     st.write("# Event Summary:\n", result)
     with open('event.ics', 'w') as f:
