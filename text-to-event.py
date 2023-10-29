@@ -1,10 +1,10 @@
 import streamlit as st
 from io import StringIO
 import ics
-import re
 from langchain.llms import OpenAI
 from langchain.prompts import PromptTemplate
 from prompt_template import PROMPT_TEMPLATE
+from langchain.output_parsers import CommaSeparatedListOutputParser
 
 st.set_page_config(page_title="text-to-event", layout="wide")
 st.title("text-to-event")
@@ -42,10 +42,9 @@ if user_input:
     llm = OpenAI(model_name="text-davinci-003", openai_api_key=openai_api_key)
     answer = llm(prompt.format(user_input=user_input))
 
-    cleaned_answer = answer.replace("\n", "")
-    pattern = r"^NAME: ([\w\s'-]+)LOCATION: ([\w\s'-]+)START: ([\w\s'-:]+)END: ([\w\s'-:]+)DESCRIPTION: ([\w\s'-]+)"
-    regex = re.compile(pattern)
-    parsed_answer = regex.match(cleaned_answer).groups()
+    cleaned_answer = answer[10:]
+    parser = CommaSeparatedListOutputParser()
+    parsed_answer = parser.parse(cleaned_answer)
 
     c = ics.Calendar()
     e = ics.Event()

@@ -1,9 +1,4 @@
-PROMPT_TEMPLATE = '''Parse event details from the following input and give the results in the following format:
-NAME:
-LOCATION:
-START:
-END:
-DESCRIPTION:
+PROMPT_TEMPLATE = '''Parse event details from the following INPUT TO PARSE and give the ANSWER as a list of five strings: name, location, start, end, description; like in the following examples:
 
 <Example 1>
 INPUT TO PARSE:
@@ -18,15 +13,8 @@ Yours sincerely,
 Work Pass Division
 Employment Pass Services Centre"
 
-
 ANSWER:
-
-NAME: Appointment Employment Pass Services Centre
-LOCATION: Employment Pass Services Centre
-START: 2023-08-21 08:30:00
-END: 2023-08-21 09:30:00
-DESCRIPTION: Appointment reference no. is M43467
-
+Appointment Employment Pass Services Centre, Employment Pass Services Centre, 2023-08-21 08:30:00, 2023-08-21 09:30:00, Appointment reference no. is M43467
 <End of example 1>
 
 <Example 2>
@@ -41,20 +29,13 @@ During the interview, she will discuss further the role and responsibilities, th
 Let me know if you have any other questions and good luck to the interview!
 
 Best regards, 
-Thomas Mark
+Thomas Mark"
 
 ANSWER:
-
-NAME: Interview with Hiring Manager
-LOCATION: Conference Hotel
-START: 2023-10-03 13:00:00
-END: 2023-10-03 14:30:00
-DESCRIPTION: role, responsabilities, team's expectations, questions
-
+Interview with Hiring Manager, Conference Hotel, 2023-10-03 13:00:00, 2023-10-03 14:30:00, role, responsabilities, team's expectations, questions
 <End of example 2>
 
-If the year is not mentioned, fill it in with 2023 for the start and end. 
+If the year is not mentioned, fill it in with 2023 for the dates. 
 If the END is not mentioned, set it at the same data as the START but one hour later.
-Do not include the "ANSWER:" or blank lines at the beginning of the message!
 
 INPUT TO PARSE: "{user_input}"'''
