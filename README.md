@@ -3,6 +3,8 @@
 
 App accessible at https://text-to-event.streamlit.app
 
+(when inactive, the app enters sleep mode, and it takes a couple of minutes to restart)
+
 ### Instructions:
 1) Enter your OpenAI API key in the box from the sidebar;
 2) Select your timezone using the slider;
