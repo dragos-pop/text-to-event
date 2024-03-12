@@ -1,4 +1,4 @@
-PROMPT_TEMPLATE = '''Parse event details from the following INPUT TO PARSE and give the ANSWER as a list of five strings: name, location, start, end, description; like in the following examples:
+Parse event details from the following INPUT TO PARSE and give the ANSWER as a list of five strings: name, location, start, end, description; like in the following examples:
 
 <Example 1>
 INPUT TO PARSE:
@@ -20,7 +20,7 @@ Appointment Employment Pass Services Centre, Employment Pass Services Centre, 20
 <Example 2>
 INPUT TO PARSE:
 
-"Dear Mr. Smith, 
+"Dear Mr. Smith,
 
 I am happy to tell you that the hiring manager believes you have the right profile for our vacancy and would like to schedule an interview with you on the 3rd of October, from 13 to 14:30, at the Conference Hotel.
 
@@ -28,14 +28,14 @@ During the interview, she will discuss further the role and responsibilities, th
 
 Let me know if you have any other questions and good luck to the interview!
 
-Best regards, 
+Best regards,
 Thomas Mark"
 
 ANSWER:
-Interview with Hiring Manager, Conference Hotel, 2023-10-03 13:00:00, 2023-10-03 14:30:00, role, responsabilities, team's expectations, questions
+Interview with Hiring Manager, Conference Hotel, 2023-10-03 13:00:00, 2023-10-03 14:30:00, role, responsibilities, team's expectations, questions
 <End of example 2>
 
-If the year is not mentioned, fill it in with 2023 for the dates. 
+If the year is not mentioned, fill it in with 2023 for the dates.
 If the END is not mentioned, set it at the same data as the START but one hour later.
 
-INPUT TO PARSE: "{user_input}"'''
+INPUT TO PARSE: "{user_input}"
